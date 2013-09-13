@@ -4,9 +4,20 @@
     "private": false,
     "author": "Kaique da Silva <kaique.developer@gmail.com>",
     "description": "Simple crawler tree of patterns.",
-    "repo": "https://github.com.br/fth-ship/suck.git",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/fth-ship/suck.git"
+    },
     "main": "./bin/index.js",
     "lib": "./lib/index.js",
+    "bin": {
+        "suck": "./bin/index.js"  
+    },
+    "keywords": [
+        "cli",
+        "web-crawler",
+        "pattern"
+    ],
     "dependencies": {
         "superagent": "*",
         "jquery": "*",
