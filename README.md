@@ -44,4 +44,4 @@ Get the tree of anchors based into an pattern.
 
 ## Author and the license
 
-    Kaique da Silva <kaique.developer@gmail.com>, under <BSD-lincese>
+    Kaique da Silva <kaique.developer@gmail.com>, under <BSD-license>
