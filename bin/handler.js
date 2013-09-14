@@ -115,7 +115,7 @@ module.exports = exports = function ( program, process ) {
         .option('-l, --list <patterns>', 'Patterns to match', list)
         .option('-e, --end <n>', 'Limit of exploration', integer)
         .option('-o, --out [file]', 'Out filename')
-        .option('-e, --err [file]', 'Error filename')
+        .option('-d, --err [file]', 'Error filename')
         .option('-v, --verbose', 'Show progress in the stdout')
         .parse(process.argv);
 
