@@ -1,6 +1,6 @@
 {
     "name": "suck",
-    "version": "0.0.1",
+    "version": "0.0.3",
     "private": false,
     "author": "Kaique da Silva <kaique.developer@gmail.com>",
     "description": "Simple crawler tree of patterns.",
