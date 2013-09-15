@@ -25,10 +25,10 @@ module.exports = exports = function ( program, process ) {
             // target of exploration
             target: program.target,
             // pattern list to match
-            pattern: program.list
+            pattern: program.list,
+            // set limit ratio
+            limit: program.end
         };
-        // limit of deep extraction
-        var limit = program.end || 100;
         // output filename
         var out = program.out || 'output.json';
         // error filename
@@ -95,7 +95,7 @@ module.exports = exports = function ( program, process ) {
                     console.log( outputMessage, out, total );
                 } else {
                     outputMessage = 'Extractions not performed, maybe the pattern not exist at %s';   
-                    console.log( outputMessage, o['target'] );
+                    console.log( outputMessage, options['target'] );
                 }
                 separatorHandler( dashesNumber );
             } 

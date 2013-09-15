@@ -40,16 +40,15 @@ suite('Crawler', function () {
         });
 
         test('recursiveSearch', function (done) {
-            var target = 'http://pt.wikipedia.org' + 
-                         '/wiki/El_Chavo_del_Ocho'; 
-            var patterns = [ 'imdb' ];
+            var target = 'http://nodejs.org/api/_toc.html'; 
+            var patterns = [ '/api' ];
             var options = {
                 target: target,
                 pattern: patterns,
+                limit: 100
             };
 
             function recursionHandler (err, href, res) {
-                console.log(err, href);
                 should.not.exist(err);
                 should.exist(res);
             }

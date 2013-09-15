@@ -8,10 +8,10 @@
         "type": "git",
         "url": "https://github.com/fth-ship/suck.git"
     },
-    "main": "./bin/index.js",
+    "main": "./bin/suck.js",
     "lib": "./lib/index.js",
     "bin": {
-        "suck": "./bin/index.js"  
+        "suck": "./bin/suck.js"  
     },
     "keywords": [
         "cli",
