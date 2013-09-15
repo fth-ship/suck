@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>handler.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="handler.html">
+                handler.js
+              </a>
+            
+              
+              <a class="source" href="suck.html">
+                suck.js
+              </a>
+            
+              
+              <a class="source" href="index.html">
+                index.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>handler.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>module.exports = exports = <span class="function"><span class="keyword">function</span> <span class="params">( program, process )</span> {</span>
+    <span class="keyword">var</span> crawler = require(<span class="string">'../lib'</span>);
+    <span class="keyword">var</span> path = require(<span class="string">'path'</span>);
+    <span class="keyword">var</span> pack = require(<span class="string">'../package'</span>);
+    <span class="keyword">var</span> fs = require(<span class="string">'fs'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>comparison lists</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> output = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>var usage = [];</p>
+<p>parse to integer
+@param val</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="function"><span class="keyword">function</span> <span class="title">integer</span> <span class="params">(val)</span> {</span>
+        <span class="keyword">return</span> parseInt(val, <span class="number">10</span>);    
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>split by comma
+@param val</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="function"><span class="keyword">function</span> <span class="title">list</span> <span class="params">(val)</span> {</span>
+        <span class="keyword">return</span> val.split(<span class="string">','</span>);
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>main function to run the crawler</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="function"><span class="keyword">function</span> <span class="title">findPatternsAndLog</span> <span class="params">( program )</span> {</span>
+        <span class="keyword">var</span> options = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>target of exploration</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            target: program.target,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>pattern list to match</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            pattern: program.list,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>set limit ratio</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            limit: program.end
+        };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>output filename</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> out = program.out || <span class="string">'output.json'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>error filename</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> err = program.err || <span class="string">'error.json'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>stream of files</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> errorStream = <span class="literal">null</span>;
+        <span class="keyword">var</span> outputStream = program.out &amp;&amp; fs.createWriteStream( out ) || <span class="literal">null</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>delete var and exit the process</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">end</span> <span class="params">()</span> {</span>
+            <span class="keyword">if</span> ( errorStream ) {
+                errorStream.close();
+            } <span class="keyword">if</span> ( outputStream ) {
+                outputStream.close();
+            }
+
+            <span class="keyword">delete</span> options;
+            <span class="keyword">delete</span> limit;
+            <span class="keyword">delete</span> out;
+            <span class="keyword">delete</span> err;
+            <span class="keyword">delete</span> errorStream;
+            <span class="keyword">delete</span> outputStream;
+
+            <span class="keyword">return</span> process.exit( <span class="number">0</span> );
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">outputHandler</span> <span class="params">( e, href, res )</span> {</span>
+            <span class="keyword">if</span> ( !e ) {
+                output.push( href ); 
+            } <span class="keyword">if</span> ( e &amp;&amp; !errorStream ) {
+                errorStream = fs.createWriteStream( err );
+            } <span class="keyword">if</span> ( e &amp;&amp; errorStream ) {
+                errorStream.write( e + <span class="string">'\n'</span> );    
+            }
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">verboseHandler</span> <span class="params">( e, href, res )</span> {</span>
+            <span class="keyword">if</span> ( program.verbose ) {
+                console.log(
+                    <span class="string">'[ URL: %s - status: %s ]'</span>, 
+                    href, 
+                    res.status 
+                );
+            }
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">separatorHandler</span> <span class="params">(n)</span> {</span>
+            <span class="keyword">var</span> line = <span class="keyword">new</span> Array( n || <span class="number">100</span> );
+            console.log( <span class="string">'\n'</span> + line.join(<span class="string">'-'</span>) + <span class="string">'\n'</span> );
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">completeVerboseHandler</span> <span class="params">( total )</span> {</span>
+            <span class="keyword">var</span> outputMessage = <span class="string">''</span>;
+            <span class="keyword">var</span> dashesNumber = <span class="number">60</span>;
+
+            <span class="keyword">if</span> ( program.verbose ) {
+                separatorHandler( dashesNumber );
+                <span class="keyword">if</span> ( !program.out ) out = <span class="string">'\"STDOUT\"'</span>;
+                <span class="keyword">if</span> ( total &gt; <span class="number">1</span> ) {
+                    outputMessage = <span class="string">'Completed: %s with total of %s extractions'</span>;   
+                    console.log( outputMessage, out, total );
+                } <span class="keyword">else</span> <span class="keyword">if</span> ( total === <span class="number">1</span> ) {
+                    outputMessage = <span class="string">'Completed: %s with total of %s extraction'</span>;
+                    console.log( outputMessage, out, total );
+                } <span class="keyword">else</span> {
+                    outputMessage = <span class="string">'Extractions not performed, maybe the pattern not exist at %s'</span>;   
+                    console.log( outputMessage, options[<span class="string">'target'</span>] );
+                }
+                separatorHandler( dashesNumber );
+            } 
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">fileOutputHandler</span> <span class="params">()</span> {</span>
+            <span class="keyword">if</span> ( program.out ) {
+                outputStram.write( JSON.stringfy( output ) );
+            }
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">stdoutHandler</span> <span class="params">()</span> {</span>
+            <span class="keyword">if</span> ( !program.out ) {
+                console.log( JSON.stringify( output, <span class="literal">null</span>, <span class="number">4</span> ) );    
+            }
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">endHandler</span> <span class="params">( total )</span> {</span>
+            completeVerboseHandler( total );
+            fileOutputHandler();
+            stdoutHandler();
+
+            <span class="keyword">return</span> end();
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">stepHandler</span> <span class="params">( e, href, res )</span> {</span>
+            outputHandler( e, href, res );
+            verboseHandler( e, href, res );
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">doneHandler</span> <span class="params">( total )</span> {</span>
+            endHandler( total );    
+        }
+
+        crawler
+            .pattern
+            .recursiveSearch( 
+                options, 
+                stepHandler, 
+                doneHandler 
+            );
+    }
+
+    program
+        .version( pack[<span class="string">'version'</span>] )
+        .usage(<span class="string">'[options]'</span>)
+        .option(<span class="string">'-t, --target [host]'</span>, <span class="string">'Target of search'</span>)
+        .option(<span class="string">'-l, --list &lt;patterns&gt;'</span>, <span class="string">'Patterns to match'</span>, list)
+        .option(<span class="string">'-e, --end &lt;n&gt;'</span>, <span class="string">'Limit of exploration'</span>, integer)
+        .option(<span class="string">'-o, --out [file]'</span>, <span class="string">'Out filename'</span>)
+        .option(<span class="string">'-d, --err [file]'</span>, <span class="string">'Error filename'</span>)
+        .option(<span class="string">'-v, --verbose'</span>, <span class="string">'Show progress in the stdout'</span>)
+        .parse(process.argv);
+
+    <span class="keyword">if</span> ( program.target &amp;&amp; program.list ) {
+        findPatternsAndLog(program);    
+    }
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
