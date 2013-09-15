@@ -41,16 +41,11 @@ module.exports = exports = function ( program, process ) {
         function end () {
             if ( errorStream ) {
                 errorStream.close();
+                delete errorStream;
             } if ( outputStream ) {
                 outputStream.close();
+                delete outputStream;
             }
-
-            delete options;
-            delete limit;
-            delete out;
-            delete err;
-            delete errorStream;
-            delete outputStream;
 
             return process.exit( 0 );
         }
@@ -95,7 +90,7 @@ module.exports = exports = function ( program, process ) {
                     console.log( outputMessage, out, total );
                 } else {
                     outputMessage = 'Extractions not performed, maybe the pattern not exist at %s';   
-                    console.log( outputMessage, options['target'] );
+                    console.log( outputMessage, options.target );
                 }
                 separatorHandler( dashesNumber );
             } 
@@ -103,7 +98,7 @@ module.exports = exports = function ( program, process ) {
 
         function fileOutputHandler () {
             if ( program.out ) {
-                outputStream.write( JSON.stringfy( output ) );
+                outputStream.write( JSON.stringify( output ) );
             }
         }
 
@@ -140,7 +135,7 @@ module.exports = exports = function ( program, process ) {
     }
 
     program
-        .version( pack['version'] )
+        .version( pack.version )
         .usage('[options]')
         .option('-t, --target [host]', 'Target of search')
         .option('-l, --list <patterns>', 'Patterns to match', list)
