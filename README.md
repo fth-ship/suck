@@ -54,6 +54,20 @@ Get the tree of anchors based into an pattern.
 
     - Add Jug support
 
+    - Trainning algorithm to capture URL's with patterns:
+
+        - Semantic URL
+
+        - Schema information
+
+        - Meta information
+
+        - Content
+
+        - Sentiment
+
+        - analysis sentimental
+
 
     - Move the methods of `bin/index.js` to `lib/index.js`, to make more reusable. [ OK ]
 
