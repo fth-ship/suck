@@ -5,7 +5,7 @@ module.exports = exports = function ( program, process ) {
     var fs = require('fs');
     // comparison lists
     var output = [];
-    var usage = [];
+    //var usage = [];
 
     // parse to integer
     // @param val
@@ -33,79 +33,110 @@ module.exports = exports = function ( program, process ) {
         var out = program.out || 'output.json';
         // error filename
         var err = program.err || 'error.json';
-        // stream of file
+        // stream of files
+        var errorStream = null;
         var outputStream = program.out && fs.createWriteStream( out ) || null;
 
         // delete var and exit the process
         function end () {
+            if ( errorStream ) {
+                errorStream.close();
+            } if ( outputStream ) {
+                outputStream.close();
+            }
+
             delete options;
             delete limit;
             delete out;
             delete err;
+            delete errorStream;
             delete outputStream;
+
             return process.exit( 0 );
         }
 
-        // handler to start up the crawling action 
-        function crawlerHandler ( e, stack, res ) {
-            if ( e ) {
-                fs.writeFileSync( 
-                    path.join( err ), 
-                    JSON.stringify( e ),
-                    'utf-8'
+        function outputHandler ( e, href, res ) {
+            if ( !e ) {
+                output.push( href ); 
+            } if ( e && !errorStream ) {
+                errorStream = fs.createWriteStream( err );
+            } if ( e && errorStream ) {
+                errorStream.write( e + '\n' );    
+            }
+        }
+
+        function verboseHandler ( e, href, res ) {
+            if ( program.verbose ) {
+                console.log(
+                    '[ URL: %s - status: %s ]', 
+                    href, 
+                    res.status 
                 );
-                console.log('Sorry, but something is wrong: %s', err);
-                end();
-            } else if ( program.out ) {
-                outputStream.write( JSON.stringify( output ) );
-                outputStream.close();
-                console.log('Completed: %s', out );
-                end();
-            } else {
-                console.log( JSON.stringify( output, null, 4 ) );    
-                end();
+            }
+        }
+
+        function separatorHandler (n) {
+            var line = new Array( n || 100 );
+            console.log( '\n' + line.join('-') + '\n' );
+        }
+
+        function completeVerboseHandler ( total ) {
+            var outputMessage = '';
+            var dashesNumber = 60;
+
+            if ( program.verbose ) {
+                separatorHandler( dashesNumber );
+                if ( !program.out ) out = '\"STDOUT\"';
+                if ( total > 1 ) {
+                    outputMessage = 'Completed: %s with total of %s extractions';   
+                    console.log( outputMessage, out, total );
+                } else if ( total === 1 ) {
+                    outputMessage = 'Completed: %s with total of %s extraction';
+                    console.log( outputMessage, out, total );
+                } else {
+                    outputMessage = 'Extractions not performed, maybe the pattern not exist at %s';   
+                    console.log( outputMessage, o['target'] );
+                }
+                separatorHandler( dashesNumber );
             } 
         }
 
-        // handler to deep extraction
-        function crawlerRecursionHandler (e, stack, res ) {
-            // handler of anchors matched
-            function stackHandler ( href ) {
-                usage.push( href );
-                if ( output.indexOf( href ) === -1 ) {
-                    output.push( href ); 
-                    if ( program.verbose ) {
-                        console.log(
-                            '[ %s ] - %s - total: %s', 
-                            res.status, 
-                            href, 
-                            output.length
-                        );
-                    }
-                }
-            }
-
-            // handler of step by step
-            function recursionHandler () {
-                stack.map( stackHandler );
-                limit -= 1;
-                options['target'] = usage[0];
-                usage.shift();
-                crawler.pattern.search( options, crawlerRecursionHandler );
-            }
-
-            // terminal handler
-            function finalHandler () {
-                crawlerHandler( e, stack, res );
-            }
-
-            if ( limit ) { 
-                recursionHandler();    
-            } else {
-                finalHandler();
+        function fileOutputHandler () {
+            if ( program.out ) {
+                outputStram.write( JSON.stringfy( output ) );
             }
         }
-        crawler.pattern.search( options, crawlerRecursionHandler );
+
+        function stdoutHandler () {
+            if ( !program.out ) {
+                console.log( JSON.stringify( output, null, 4 ) );    
+            }
+        }
+
+        function endHandler ( total ) {
+            completeVerboseHandler( total );
+            fileOutputHandler();
+            stdoutHandler();
+
+            return end();
+        }
+
+        function stepHandler ( e, href, res ) {
+            outputHandler( e, href, res );
+            verboseHandler( e, href, res );
+        }
+
+        function doneHandler ( total ) {
+            endHandler( total );    
+        }
+
+        crawler
+            .pattern
+            .recursiveSearch( 
+                options, 
+                stepHandler, 
+                doneHandler 
+            );
     }
 
     program

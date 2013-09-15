@@ -34,9 +34,38 @@ suite('Crawler', function () {
             }
 
             crawler.pattern.search({
-                target: 'http://www.oppa.com.br',
-                pattern: [ 'oppa.com.br' ],
+                target: 'http://pt.wikipedia.org/wiki/El_Chavo_del_Ocho',
+                pattern: [ 'imdb' ],
             }, crawlerPatternSearchHandler);
+        });
+
+        test('recursiveSearch', function (done) {
+            var target = 'http://pt.wikipedia.org' + 
+                         '/wiki/El_Chavo_del_Ocho'; 
+            var patterns = [ 'imdb' ];
+            var options = {
+                target: target,
+                pattern: patterns,
+            };
+
+            function recursionHandler (err, href, res) {
+                console.log(err, href);
+                should.not.exist(err);
+                should.exist(res);
+            }
+
+            function doneHandler ( total ) {
+                ( total > 0 ).should.be.ok;
+                done();
+            }
+
+            crawler
+                .pattern
+                .recursiveSearch(
+                    options, 
+                    recursionHandler, 
+                    doneHandler 
+                );
         });
     });    
 });
