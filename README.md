@@ -34,7 +34,13 @@ Get the tree of anchors based into an pattern.
 
 ### Example of usage
 
+    [Verbose output]
+
     suck -t http://pt.wikipedia.org/wiki/El_Chavo_del_Ocho -l imdb -v -e 1 
+
+    [File output]
+
+    suck -t http://pt.wikipedia.org/wiki/Charlie_Chaplin -l imdb -e 10 -o chaplin-reference.json
 
 ### Next
 
