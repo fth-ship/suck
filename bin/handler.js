@@ -103,7 +103,7 @@ module.exports = exports = function ( program, process ) {
 
         function fileOutputHandler () {
             if ( program.out ) {
-                outputStram.write( JSON.stringfy( output ) );
+                outputStream.write( JSON.stringfy( output ) );
             }
         }
 
