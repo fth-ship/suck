@@ -24,8 +24,8 @@
               </a>
             
               
-              <a class="source" href="index.html">
-                index.js
+              <a class="source" href="suck.html">
+                suck.js
               </a>
             
               
@@ -181,6 +181,120 @@ pattern.match = matchPattern;</pre></div></div>
     <span class="keyword">return</span> root;
 }
 pattern.search = searchPattern;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>recursive pattern search</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="function"><span class="keyword">function</span> <span class="title">recursiveSearchPattern</span> <span class="params">( o, fn, done )</span> {</span>
+    <span class="keyword">var</span> o = o || {};
+    <span class="keyword">var</span> fn = fn || <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>};
+    <span class="keyword">var</span> done = done || <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>};
+    <span class="keyword">var</span> href = <span class="literal">null</span>;
+    <span class="keyword">var</span> firstTarget = o[<span class="string">'target'</span>].toString();
+    <span class="keyword">var</span> limit = ( o[<span class="string">'limit'</span>] || <span class="number">1</span> );
+    <span class="keyword">var</span> output = [];
+    <span class="keyword">var</span> usage = [];
+    <span class="keyword">var</span> HAS_HTTP_PROTOCOL = <span class="literal">false</span>;
+
+    <span class="function"><span class="keyword">function</span> <span class="title">crawlerRecursionHandler</span> <span class="params">(e, stack, res )</span> {</span>
+        <span class="function"><span class="keyword">function</span> <span class="title">nextHandler</span> <span class="params">()</span> {</span>
+            o[<span class="string">'target'</span>] = usage[<span class="number">0</span>];
+            o[<span class="string">'limit'</span>] = limit;
+
+            HAS_HTTP_PROTOCOL = (
+                o[<span class="string">'target'</span>] &amp;&amp;
+                o[<span class="string">'target'</span>].search(<span class="string">'/^http[s]\:\/\//'</span>) &gt; -<span class="number">1</span>
+            );
+
+            <span class="keyword">if</span> ( HAS_HTTP_PROTOCOL ) {
+                searchPattern( o, crawlerRecursionHandler );
+                usage.shift();
+            } <span class="keyword">else</span> {
+                done( output.length );    
+            }
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">matchHandler</span> <span class="params">( href )</span> {</span>
+            usage.push( href );
+            <span class="keyword">if</span> ( output.indexOf( href ) === -<span class="number">1</span> ) {
+                output.push( href );
+                fn( e, href, res );
+                nextHandler();
+            }
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>handler of anchors matched</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">stackHandler</span> <span class="params">( href )</span> {</span>
+            matchHandler( href ); 
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">extractionHandler</span> <span class="params">()</span> {</span>
+            stack.map( stackHandler );
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>handler of step by step</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">recursionHandler</span> <span class="params">()</span> {</span>
+            extractionHandler();
+        }
+
+        <span class="keyword">if</span> ( limit ) { 
+            limit -= <span class="number">1</span>;
+            recursionHandler();    
+        } <span class="keyword">else</span> {
+            done( output.length );
+        }
+    }
+
+    <span class="keyword">if</span> ( o ) { 
+        HAS_HTTP_PROTOCOL = (
+            o[<span class="string">'target'</span>] &amp;&amp;
+            o[<span class="string">'target'</span>].search(<span class="string">'/^http[s]\:\/\//'</span>) &gt; -<span class="number">1</span>
+        );
+
+        <span class="keyword">if</span> ( HAS_HTTP_PROTOCOL ) {
+            searchPattern( o, crawlerRecursionHandler );
+        } <span class="keyword">else</span> {
+            done( output.length );    
+        }
+    }
+
+    <span class="keyword">return</span> root;
+}
+pattern.recursiveSearch = recursiveSearchPattern;</pre></div></div>
             
         </li>
         

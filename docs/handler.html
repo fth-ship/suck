@@ -24,8 +24,8 @@
               </a>
             
               
-              <a class="source" href="index.html">
-                index.js
+              <a class="source" href="suck.html">
+                suck.js
               </a>
             
               
@@ -75,8 +75,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> output = [];
-    <span class="keyword">var</span> usage = [];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">var</span> output = [];</pre></div></div>
             
         </li>
         
@@ -87,7 +86,8 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>parse to integer
+              <p>var usage = [];</p>
+<p>parse to integer
 @param val</p>
 
             </div>
@@ -158,8 +158,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            pattern: program.list
-        };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            pattern: program.list,</pre></div></div>
             
         </li>
         
@@ -170,11 +169,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>limit of deep extraction</p>
+              <p>set limit ratio</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> limit = program.end || <span class="number">100</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>            limit: program.end
+        };</pre></div></div>
             
         </li>
         
@@ -215,11 +215,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>stream of file</p>
+              <p>stream of files</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> outputStream = program.out &amp;&amp; fs.createWriteStream( out ) || <span class="literal">null</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">var</span> errorStream = <span class="literal">null</span>;
+        <span class="keyword">var</span> outputStream = program.out &amp;&amp; fs.createWriteStream( out ) || <span class="literal">null</span>;</pre></div></div>
             
         </li>
         
@@ -235,135 +236,104 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">end</span> <span class="params">()</span> {</span>
+            <span class="keyword">if</span> ( errorStream ) {
+                errorStream.close();
+            } <span class="keyword">if</span> ( outputStream ) {
+                outputStream.close();
+            }
+
             <span class="keyword">delete</span> options;
             <span class="keyword">delete</span> limit;
             <span class="keyword">delete</span> out;
             <span class="keyword">delete</span> err;
+            <span class="keyword">delete</span> errorStream;
             <span class="keyword">delete</span> outputStream;
+
             <span class="keyword">return</span> process.exit( <span class="number">0</span> );
-        }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p>handler to start up the crawling action </p>
+        }
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">crawlerHandler</span> <span class="params">( e, stack, res )</span> {</span>
-            <span class="keyword">if</span> ( e ) {
-                fs.writeFileSync( 
-                    path.join( err ), 
-                    JSON.stringify( e ),
-                    <span class="string">'utf-8'</span>
-                );
-                console.log(<span class="string">'Sorry, but something is wrong: %s'</span>, err);
-                end();
-            } <span class="keyword">else</span> <span class="keyword">if</span> ( program.out ) {
-                outputStream.write( JSON.stringify( output ) );
-                outputStream.close();
-                console.log(<span class="string">'Completed: %s'</span>, out );
-                end();
-            } <span class="keyword">else</span> {
-                console.log( JSON.stringify( output, <span class="literal">null</span>, <span class="number">4</span> ) );    
-                end();
-            } 
-        }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
-              <p>handler to deep extraction</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="function"><span class="keyword">function</span> <span class="title">crawlerRecursionHandler</span> <span class="params">(e, stack, res )</span> {</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
-              </div>
-              <p>handler of anchors matched</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            <span class="function"><span class="keyword">function</span> <span class="title">stackHandler</span> <span class="params">( href )</span> {</span>
-                usage.push( href );
-                <span class="keyword">if</span> ( output.indexOf( href ) === -<span class="number">1</span> ) {
-                    output.push( href ); 
-                    <span class="keyword">if</span> ( program.verbose ) {
-                        console.log(
-                            <span class="string">'[ %s ] - %s - total: %s'</span>, 
-                            res.status, 
-                            href, 
-                            output.length
-                        );
-                    }
-                }
-            }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-16">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
-              </div>
-              <p>handler of step by step</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            <span class="function"><span class="keyword">function</span> <span class="title">recursionHandler</span> <span class="params">()</span> {</span>
-                stack.map( stackHandler );
-                limit -= <span class="number">1</span>;
-                options[<span class="string">'target'</span>] = usage[<span class="number">0</span>];
-                usage.shift();
-                crawler.pattern.search( options, crawlerRecursionHandler );
-            }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-17">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
-              </div>
-              <p>terminal handler</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            <span class="function"><span class="keyword">function</span> <span class="title">finalHandler</span> <span class="params">()</span> {</span>
-                crawlerHandler( e, stack, res );
-            }
-
-            <span class="keyword">if</span> ( limit ) { 
-                recursionHandler();    
-            } <span class="keyword">else</span> {
-                finalHandler();
+        <span class="function"><span class="keyword">function</span> <span class="title">outputHandler</span> <span class="params">( e, href, res )</span> {</span>
+            <span class="keyword">if</span> ( !e ) {
+                output.push( href ); 
+            } <span class="keyword">if</span> ( e &amp;&amp; !errorStream ) {
+                errorStream = fs.createWriteStream( err );
+            } <span class="keyword">if</span> ( e &amp;&amp; errorStream ) {
+                errorStream.write( e + <span class="string">'\n'</span> );    
             }
         }
-        crawler.pattern.search( options, crawlerRecursionHandler );
+
+        <span class="function"><span class="keyword">function</span> <span class="title">verboseHandler</span> <span class="params">( e, href, res )</span> {</span>
+            <span class="keyword">if</span> ( program.verbose ) {
+                console.log(
+                    <span class="string">'[ URL: %s - status: %s ]'</span>, 
+                    href, 
+                    res.status 
+                );
+            }
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">separatorHandler</span> <span class="params">(n)</span> {</span>
+            <span class="keyword">var</span> line = <span class="keyword">new</span> Array( n || <span class="number">100</span> );
+            console.log( <span class="string">'\n'</span> + line.join(<span class="string">'-'</span>) + <span class="string">'\n'</span> );
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">completeVerboseHandler</span> <span class="params">( total )</span> {</span>
+            <span class="keyword">var</span> outputMessage = <span class="string">''</span>;
+            <span class="keyword">var</span> dashesNumber = <span class="number">60</span>;
+
+            <span class="keyword">if</span> ( program.verbose ) {
+                separatorHandler( dashesNumber );
+                <span class="keyword">if</span> ( !program.out ) out = <span class="string">'\"STDOUT\"'</span>;
+                <span class="keyword">if</span> ( total &gt; <span class="number">1</span> ) {
+                    outputMessage = <span class="string">'Completed: %s with total of %s extractions'</span>;   
+                    console.log( outputMessage, out, total );
+                } <span class="keyword">else</span> <span class="keyword">if</span> ( total === <span class="number">1</span> ) {
+                    outputMessage = <span class="string">'Completed: %s with total of %s extraction'</span>;
+                    console.log( outputMessage, out, total );
+                } <span class="keyword">else</span> {
+                    outputMessage = <span class="string">'Extractions not performed, maybe the pattern not exist at %s'</span>;   
+                    console.log( outputMessage, options[<span class="string">'target'</span>] );
+                }
+                separatorHandler( dashesNumber );
+            } 
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">fileOutputHandler</span> <span class="params">()</span> {</span>
+            <span class="keyword">if</span> ( program.out ) {
+                outputStram.write( JSON.stringfy( output ) );
+            }
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">stdoutHandler</span> <span class="params">()</span> {</span>
+            <span class="keyword">if</span> ( !program.out ) {
+                console.log( JSON.stringify( output, <span class="literal">null</span>, <span class="number">4</span> ) );    
+            }
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">endHandler</span> <span class="params">( total )</span> {</span>
+            completeVerboseHandler( total );
+            fileOutputHandler();
+            stdoutHandler();
+
+            <span class="keyword">return</span> end();
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">stepHandler</span> <span class="params">( e, href, res )</span> {</span>
+            outputHandler( e, href, res );
+            verboseHandler( e, href, res );
+        }
+
+        <span class="function"><span class="keyword">function</span> <span class="title">doneHandler</span> <span class="params">( total )</span> {</span>
+            endHandler( total );    
+        }
+
+        crawler
+            .pattern
+            .recursiveSearch( 
+                options, 
+                stepHandler, 
+                doneHandler 
+            );
     }
 
     program
@@ -373,7 +343,7 @@
         .option(<span class="string">'-l, --list &lt;patterns&gt;'</span>, <span class="string">'Patterns to match'</span>, list)
         .option(<span class="string">'-e, --end &lt;n&gt;'</span>, <span class="string">'Limit of exploration'</span>, integer)
         .option(<span class="string">'-o, --out [file]'</span>, <span class="string">'Out filename'</span>)
-        .option(<span class="string">'-e, --err [file]'</span>, <span class="string">'Error filename'</span>)
+        .option(<span class="string">'-d, --err [file]'</span>, <span class="string">'Error filename'</span>)
         .option(<span class="string">'-v, --verbose'</span>, <span class="string">'Show progress in the stdout'</span>)
         .parse(process.argv);
 
