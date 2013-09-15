@@ -40,7 +40,16 @@ Get the tree of anchors based into an pattern.
 
     - Create the documentation of API
 
-    - Move the methods of `bin/index.js` to `lib/index.js`, to make more reusable.
+    - Add RegExp support to match patterns
+    
+    - Add ignore patterns support
+
+    - Cluster crawling
+
+    - Add Jug support
+
+
+    - Move the methods of `bin/index.js` to `lib/index.js`, to make more reusable. [ OK ]
 
 ## Author and the license
 

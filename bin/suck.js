@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-'use stict';
+'use strict';
 
 /* * * * * * * * * * 
  *                 *
